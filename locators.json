@@ -1,0 +1,31 @@
+{
+    "locators":{
+    "New Button":"//a//div[@title='New']",
+    "New Account Page":"//h2[text()='New Account']",
+    "Account Name":"//input[@name='Name']",
+    "Type Dropdown":"//div//button[@aria-label='Type']",
+    "Website":"//input[@name='Website']",
+    "Textarea":"//textarea[@part='textarea']",
+    "Employees":"//input[@name='NumberOfEmployees']",
+    "Parent Account Input Field":"//label[text()='Parent Account']/..//input[contains(@id,'combobox-input')]",
+    "Phone":"//input[@name='Phone']",
+    "Email":"//input[@inputmode='email']",
+    "Industry Dropdown":"//button[@aria-label='Industry']",
+    "Billing Address":"//input[@placeholder='Search Address']",
+    "Save button":"//button[text()='Save']",
+    "Toast Message":".toastMessage.slds-text-heading--small.forceActionsText", 
+    "Save and New Button":"//button[text()='Save & New']",
+    "Cancel Button":"//button[text()='Cancel']",
+    "Accounts Page":"//a/span[text()='Accounts']",
+    "Disney":"//span/*[text()='Disney']",
+    "Account Disney Page":"(//div[contains(@class,'highlights slds-clearfix')]/following-sibling::div)[3]",
+    "Edit Button":"//button[text()='Edit']",
+    "Edit Disney Page":"//*[text()='Edit Disney']",
+    "ToastContent Message":".toastContent",
+    "New Accounts Page":"//*[text()='New Account']",
+    "Delete Button":"//*[text()='Delete']",
+    "Delete Account Page":"//h1[text()='Delete Account']",
+    "Delete Page Button":"//span[text()='Delete']"
+   
+}
+}

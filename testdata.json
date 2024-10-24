@@ -1,8 +1,0 @@
-{
-    "locators":{
-    "NewButton":"//a//div[@title='New']",
-    "NewAccountpage":"//h2[text()='New Account']",
-    "AccountNamefield":"//input[@name='Name']"
-   
-}
-}

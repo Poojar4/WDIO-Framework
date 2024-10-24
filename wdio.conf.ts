@@ -212,7 +212,8 @@ export const config: WebdriverIO.Config = {
      */
     before: async function (capabilities, specs) {
         await browser.url("https://zucitechsoftwaresolutions--ztdev1.sandbox.my.salesforce.com/");
-        await browser.pause(5000);
+        await browser.pause(3000);
+        await browser.maximizeWindow();
         await login();
         
     },
@@ -231,7 +232,7 @@ export const config: WebdriverIO.Config = {
      * @param {GherkinDocument.IFeature} feature  Cucumber feature object
      */
     beforeFeature: async function (uri, feature) {
-        await browser.maximizeWindow();
+        
 
     },
     /**
@@ -240,8 +241,9 @@ export const config: WebdriverIO.Config = {
      * @param {ITestCaseHookParameter} world    world object containing information on pickle and test step
      * @param {object}                 context  Cucumber World object
      */
-    // beforeScenario: function (world, context) {
-    // },
+    beforeScenario: async function (world, context) {
+        await browser.pause(5000);
+    },
     /**
      *
      * Runs before a Cucumber Step.
@@ -274,16 +276,26 @@ export const config: WebdriverIO.Config = {
      * @param {number}                 result.duration  duration of scenario in milliseconds
      * @param {object}                 context          Cucumber World object
      */
-    // afterScenario: function (world, result, context) {
-    // },
+    afterScenario: async function (world, result, context) {
+        if (!result.passed) {
+            console.log('step failed');
+      
+            const screenshot = await browser.takeScreenshot();
+            console.log(screenshot);
+          }else{
+            console.log('step is passed');
+          }
+
+    },
     /**
      *
      * Runs after a Cucumber Feature.
      * @param {string}                   uri      path to feature file
      * @param {GherkinDocument.IFeature} feature  Cucumber feature object
      */
-    // afterFeature: function (uri, feature) {
-    // },
+    afterFeature: async function (uri, feature) {
+        await browser.closeWindow();
+    },
     
     /**
      * Runs after a WebdriverIO command gets executed
