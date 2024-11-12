@@ -6,3 +6,5 @@ Given(/^I open the site "([^"]*)?"$/, async (urlText) => {
   console.log(`This is the fullurl:${fullUrl}`);
   await browser.url(fullUrl);
 });
+
+

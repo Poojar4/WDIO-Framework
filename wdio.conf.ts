@@ -52,9 +52,14 @@ export const config: WebdriverIO.Config = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-        browserName: 'chrome'
+        browserName: 'chrome',
+        'goog:chromeOptions': {
+        args: ['--disable-notifications', '--disable-popup-blocking','--no-sandbox', '--disable-extensions', '--disable-infobars', '--disable-gpu']
+    }
+        
     // }, {
     //     browserName: 'MicrosoftEdge'
+    
     }],
 
     //
@@ -64,7 +69,7 @@ export const config: WebdriverIO.Config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    // logLevel: 'info',
+    logLevel: 'error',
     //
     // Set specific log levels per logger
     // loggers:
@@ -91,7 +96,7 @@ export const config: WebdriverIO.Config = {
     // baseUrl: 'http://localhost:8080',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 10000,
+    waitforTimeout: 60000,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
@@ -264,8 +269,13 @@ export const config: WebdriverIO.Config = {
      * @param {number}             result.duration  duration of scenario in milliseconds
      * @param {object}             context          Cucumber World object
      */
-    // afterStep: function (step, scenario, result, context) {
-    // },
+    afterStep: async function (step, scenario, result, context) {
+        if(!result.passed) {
+            let sessionId = browser.sessionId;
+            await browser.saveScreenshot(`screenshots/${sessionId}.png`);
+            // screenshot = true;
+        }
+    },
     /**
      *
      * Runs after a Cucumber Scenario.
@@ -277,14 +287,7 @@ export const config: WebdriverIO.Config = {
      * @param {object}                 context          Cucumber World object
      */
     afterScenario: async function (world, result, context) {
-        if (!result.passed) {
-            console.log('step failed');
-      
-            const screenshot = await browser.takeScreenshot();
-            console.log(screenshot);
-          }else{
-            console.log('step is passed');
-          }
+   
 
     },
     /**
@@ -293,9 +296,9 @@ export const config: WebdriverIO.Config = {
      * @param {string}                   uri      path to feature file
      * @param {GherkinDocument.IFeature} feature  Cucumber feature object
      */
-    afterFeature: async function (uri, feature) {
-        await browser.closeWindow();
-    },
+    // afterFeature: async function (uri, feature) {
+    //     await browser.closeWindow();
+    // },
     
     /**
      * Runs after a WebdriverIO command gets executed
