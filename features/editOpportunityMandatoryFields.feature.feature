@@ -1,13 +1,11 @@
 Feature:Opportunity Object
-    Scenario:Edit Created Opportunity Record
+    Scenario: Update Opportunity record only for mandatory fields
         Given I open the site "/lightning/o/Account/list?filterName=__Recent"
         And I expect the url to contain "Account"
         When I wait on element "Opportunity Tab" to be displayed
         And I move to element "Opportunity Tab"
         And I click on the element "Opportunities"
         And I wait on element "Opportunities Page" to be displayed
-        # And I enter the value "Salesforce" for the element "Opportunity Search List"
-        # And I press "Enter"
         And I move to element "Salesforce"
         And I wait on element "Salesforce" to be displayed
         And I click on the element "Salesforce"
@@ -20,7 +18,7 @@ Feature:Opportunity Object
         And I wait on element "Edit Salesforce Page" to be displayed
         And I expect that the element "Edit Salesforce Page" contains the text "Edit Salesforce"
         And I enter the value "Salesforce Automation" for the element "Opportunity Name"
-        And I enter the value "60000000" for the element "Amount"
+        And I wait on element "Opportunities Account Name Clear Button" to be displayed
         And I move to element "Opportunities Account Name Clear Button"
         And I click on the element "Opportunities Account Name Clear Button"
         And I move to element "Opportunities Account Name"
@@ -35,8 +33,6 @@ Feature:Opportunity Object
         And I click on the element "Year Dropdown" and select the option with the text "2023"
         And I wait on element "Close Date" to be displayed
         And I enter the value "31/12/2023" for the element "Close Date"
-        And I enter the value "70" for the element "Probability"
-        And I enter the value "Salesforce Automation" for the element "Description"
         And I move to element "Forecast Category Dropdown"
         And I wait on element "Forecast Category Dropdown" to be displayed
         And I click on the element "Forecast Category Dropdown"
@@ -44,28 +40,17 @@ Feature:Opportunity Object
         And I move to element "Stage Dropdown"
         And I click on the element "Stage Dropdown"
         And I click on the element "Stage Dropdown Value"
-        And I move to element "Status Dropdown"
-        And I click on the element "Status Dropdown"
-        And I click on the element "Status Dropdown Value"
         And I enter the value "583129" for the element "PO Number"
         And I enter the value "582126" for the element "HSN/SAC"
-        And I enter the value "Automation Testing" for the element "Next Step"
         And I enter the value "900" for the element "Night Shift Expense"
         And I enter the value "600" for the element "PST Shift Expense"
         And I enter the value "1800" for the element "US Call Expense"
-        And I enter the value "30000000" for the element "Present Cycle Expense"
-        And I move to element "Budget Consumed Prev"
-        And I click on the element "Budget Consumed Prev"
-        And I enter the value "20000000" for the element "Budget Consumed Prev"
-        And I move to element "Opportunity Type Dropdown"
-        And I click on the element "Opportunity Type Dropdown"
-        And I click on the element "Opportunity Type Dropdown Value"
         And I wait on element "Opportunity Save Button" to be enabled
         And I click on the element "Opportunity Save Button"
         And I wait on element "Opportunity Toast Message" to be displayed
         And I expect that the element "Opportunity Toast Message" contains the text "saved"
 
-    Scenario:Edit Created Opportunity Record and Verify Save and New Button
+    Scenario: Update Opportunity record only for mandatory fields and Verify Save and New Button
         Given I open the site "/lightning/o/Account/list?filterName=__Recent"
         And I expect the url to contain "Account"
         When I wait on element "Opportunity Tab" to be displayed
@@ -84,7 +69,6 @@ Feature:Opportunity Object
         And I wait on element "Edit Salesforce Page" to be displayed
         And I expect that the element "Edit Salesforce Page" contains the text "Edit Salesforce"
         And I enter the value "Salesforce Automation" for the element "Opportunity Name"
-        And I enter the value "60000000" for the element "Amount"
         And I move to element "Opportunities Account Name Clear Button"
         And I click on the element "Opportunities Account Name Clear Button"
         And I move to element "Opportunities Account Name"
@@ -99,8 +83,6 @@ Feature:Opportunity Object
         And I click on the element "Year Dropdown" and select the option with the text "2023"
         And I wait on element "Close Date" to be displayed
         And I enter the value "31/12/2023" for the element "Close Date"
-        And I enter the value "70" for the element "Probability"
-        And I enter the value "Salesforce Automation" for the element "Description"
         And I move to element "Forecast Category Dropdown"
         And I wait on element "Forecast Category Dropdown" to be displayed
         And I click on the element "Forecast Category Dropdown"
@@ -108,22 +90,11 @@ Feature:Opportunity Object
         And I move to element "Stage Dropdown"
         And I click on the element "Stage Dropdown"
         And I click on the element "Stage Dropdown Value"
-        And I move to element "Status Dropdown"
-        And I click on the element "Status Dropdown"
-        And I click on the element "Status Dropdown Value"
         And I enter the value "583129" for the element "PO Number"
         And I enter the value "582126" for the element "HSN/SAC"
-        And I enter the value "Automation Testing" for the element "Next Step"
         And I enter the value "900" for the element "Night Shift Expense"
         And I enter the value "600" for the element "PST Shift Expense"
         And I enter the value "1800" for the element "US Call Expense"
-        And I enter the value "30000000" for the element "Present Cycle Expense"
-        And I move to element "Budget Consumed Prev"
-        And I click on the element "Budget Consumed Prev"
-        And I enter the value "20000000" for the element "Budget Consumed Prev"
-        And I move to element "Opportunity Type Dropdown"
-        And I click on the element "Opportunity Type Dropdown"
-        And I click on the element "Opportunity Type Dropdown Value"
         And I wait on element "Opportunity Save and New Button" to be enabled
         And I click on the element "Opportunity Save and New Button"
         And I wait on element "Opportunity Toast Message" to be displayed
@@ -131,4 +102,4 @@ Feature:Opportunity Object
         And I wait on element "New Opportunity Page" to be displayed
         And I expect that the element "New Opportunity Page" contains the text "New Opportunity"
 
-    
+

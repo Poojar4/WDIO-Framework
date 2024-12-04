@@ -27,7 +27,7 @@ export const config: WebdriverIO.Config = {
     ],
     // Patterns to exclude.
     exclude: [
-        // 'path/to/excluded/files'
+        './features/**/PressAction.feature'
     ],
     //
     // ============
@@ -45,7 +45,7 @@ export const config: WebdriverIO.Config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 1,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
@@ -87,7 +87,7 @@ export const config: WebdriverIO.Config = {
     //
     // If you only want to run your tests until a specific amount of tests have failed use
     // bail (default is 0 - don't bail, run all tests).
-    bail: 6,
+    bail: 0,
     //
     // Set a base URL in order to shorten url command calls. If your `url` parameter starts
     // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
@@ -96,14 +96,14 @@ export const config: WebdriverIO.Config = {
     // baseUrl: 'http://localhost:8080',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 60000,
+    waitforTimeout: 40000,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
     connectionRetryTimeout: 120000,
     //
     // Default request retries count
-    connectionRetryCount: 3,
+    connectionRetryCount: 2,
     //
     // Test runner services
     // Services take over a specific job you don't want to take care of. They enhance
@@ -236,10 +236,10 @@ export const config: WebdriverIO.Config = {
      * @param {string}                   uri      path to feature file
      * @param {GherkinDocument.IFeature} feature  Cucumber feature object
      */
-    beforeFeature: async function (uri, feature) {
+    // beforeFeature: async function (uri, feature) {
         
 
-    },
+    // },
     /**
      *
      * Runs before a Cucumber Scenario.

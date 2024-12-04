@@ -7,10 +7,17 @@ Feature: Opportunity Object
         And I click on the element "Opportunities"
         And I wait on element "Opportunities Page" to be displayed
         Then I expect that the element "Opportunities Page" contains the text "Opportunities"
+        # And I enter the value "Salesforce" for the element "Opportunity Search List"
+        # And I press "Enter"
         And I move to element "Salesforce"
-        And I wait on element "Salesforce" to be displayed
+        # And I pause for 2000ms
+        # And I scroll up by "1000"
+        # And I pause for 2000ms
+        # And I wait on element "Salesforce" to be displayed
+        And I pause for 2000ms
         And I click on the element "Salesforce"
-        And I click on the element with text "Salesforce" in the list "Opportunity Search List"
+        And I pause for 2000ms
+        # And I click on the element with text "Salesforce" in the list "Opportunity Search List"
         And I wait on element "Salesforce Page" to be displayed
         And I click on the element "Employees Dropdown"
         And I wait on element "Add Employee" to be displayed

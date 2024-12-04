@@ -12,4 +12,8 @@ Feature:Opportunity Object
         And I click on the element "Salesforce"
         And I click on the element with text "Salesforce" in the list "Opportunity Search List"
         And I wait on element "Salesforce Page" to be displayed
-        
+        And I move to element "Opportunities Total Project Amount"
+        And I wait on element "Opportunities Total Project Amount" to be displayed
+        And I expect that the element "Opportunities Total Project Amount" contains the text "$50,000,000.00"
+        And I wait on element "Opportunities Budget Remaining" to be displayed
+        And I expect that the element "Opportunities Budget Remaining" contains the text "$20,000,000.00"

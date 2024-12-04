@@ -6,6 +6,8 @@ Feature: Opportunity Object
         And I move to element "Opportunity Tab"
         And I click on the element "Opportunities"
         And I wait on element "Opportunities Page" to be displayed
+        And I enter the value "Salesforce" for the element "Opportunity Search List"
+        And I press "Enter"
         And I move to element "Salesforce"
         And I wait on element "Salesforce" to be displayed
         And I click on the element "Salesforce"
