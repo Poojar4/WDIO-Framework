@@ -27,7 +27,7 @@ export const config: WebdriverIO.Config = {
     ],
     // Patterns to exclude.
     exclude: [
-        // 'path/to/excluded/files'
+        './features/**/PressAction.feature'
     ],
     //
     // ============
@@ -45,16 +45,21 @@ export const config: WebdriverIO.Config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 1,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-        browserName: 'chrome'
+        browserName: 'chrome',
+        'goog:chromeOptions': {
+        args: ['--disable-notifications', '--disable-popup-blocking','--no-sandbox', '--disable-extensions', '--disable-infobars', '--disable-gpu']
+    }
+        
     // }, {
     //     browserName: 'MicrosoftEdge'
+    
     }],
 
     //
@@ -64,7 +69,7 @@ export const config: WebdriverIO.Config = {
     // Define all options that are relevant for the WebdriverIO instance here
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
-    logLevel: 'info',
+    logLevel: 'error',
     //
     // Set specific log levels per logger
     // loggers:
@@ -91,14 +96,14 @@ export const config: WebdriverIO.Config = {
     // baseUrl: 'http://localhost:8080',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 10000,
+    waitforTimeout: 40000,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response
     connectionRetryTimeout: 120000,
     //
     // Default request retries count
-    connectionRetryCount: 3,
+    connectionRetryCount: 2,
     //
     // Test runner services
     // Services take over a specific job you don't want to take care of. They enhance
@@ -212,7 +217,8 @@ export const config: WebdriverIO.Config = {
      */
     before: async function (capabilities, specs) {
         await browser.url("https://zucitechsoftwaresolutions--ztdev1.sandbox.my.salesforce.com/");
-        await browser.pause(5000);
+        await browser.pause(3000);
+        await browser.maximizeWindow();
         await login();
         
     },
@@ -230,18 +236,19 @@ export const config: WebdriverIO.Config = {
      * @param {string}                   uri      path to feature file
      * @param {GherkinDocument.IFeature} feature  Cucumber feature object
      */
-    beforeFeature: async function (uri, feature) {
-        await browser.maximizeWindow();
+    // beforeFeature: async function (uri, feature) {
+        
 
-    },
+    // },
     /**
      *
      * Runs before a Cucumber Scenario.
      * @param {ITestCaseHookParameter} world    world object containing information on pickle and test step
      * @param {object}                 context  Cucumber World object
      */
-    // beforeScenario: function (world, context) {
-    // },
+    beforeScenario: async function (world, context) {
+        await browser.pause(5000);
+    },
     /**
      *
      * Runs before a Cucumber Step.
@@ -262,8 +269,13 @@ export const config: WebdriverIO.Config = {
      * @param {number}             result.duration  duration of scenario in milliseconds
      * @param {object}             context          Cucumber World object
      */
-    // afterStep: function (step, scenario, result, context) {
-    // },
+    afterStep: async function (step, scenario, result, context) {
+        if(!result.passed) {
+            let sessionId = browser.sessionId;
+            await browser.saveScreenshot(`screenshots/${sessionId}.png`);
+            // screenshot = true;
+        }
+    },
     /**
      *
      * Runs after a Cucumber Scenario.
@@ -274,15 +286,18 @@ export const config: WebdriverIO.Config = {
      * @param {number}                 result.duration  duration of scenario in milliseconds
      * @param {object}                 context          Cucumber World object
      */
-    // afterScenario: function (world, result, context) {
-    // },
+    afterScenario: async function (world, result, context) {
+   
+
+    },
     /**
      *
      * Runs after a Cucumber Feature.
      * @param {string}                   uri      path to feature file
      * @param {GherkinDocument.IFeature} feature  Cucumber feature object
      */
-    // afterFeature: function (uri, feature) {
+    // afterFeature: async function (uri, feature) {
+    //     await browser.closeWindow();
     // },
     
     /**
