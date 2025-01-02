@@ -7,4 +7,8 @@ Given(/^I open the site "([^"]*)?"$/, async (urlText) => {
   await browser.url(fullUrl);
 });
 
+Given(/^I open the site with url "([^"]*)?"$/, async (url:string) => {
+  await browser.url(url);
+})
+
 

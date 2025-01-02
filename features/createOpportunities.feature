@@ -7,6 +7,7 @@ Feature: Opportunity Object
         And I click on the element "Opportunities"
         # And I click on the element "Opportunities css" using js click
         And I wait on element "Opportunities Page" to be displayed
+        And I expect that the element "Opportunities Page" contains the text "Opportunities"
         And I wait on element "New Opportunity Button" to be enabled
         Then I expect that the element "New Opportunity Button" contains the text "New"
         And I click on the element "New Opportunity Button"
