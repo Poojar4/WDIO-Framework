@@ -1,6 +1,8 @@
 import { Then } from "@cucumber/cucumber";
 import { expect } from "chai";
 import test from "../../locators.json";
+import commonAction from "./commonAction";
+import { reverse } from "dns";
 
 Then(
   /^I expect the url to contain "([^"]*)?"$/,
@@ -22,10 +24,29 @@ Then(
 );
 
 Then(
-  /^I expect that element "([^"]*)?" is displayed$/,
-  async (element: string) => {
+  /^I expect that element "([^"]*)?" is( not)* displayed$/,
+  async (element: string, falseCase: boolean) => {
     const webelement = test.locators[element];
-    const ele = await await $(webelement).isDisplayed();
-    expect(ele).to.equal(true, "Element is not displayed");
+    const ele = await $(webelement);
+    commonAction.checkIsDisplayed(ele, falseCase);
+    // const checkValue = commonAction.checkIsDisplayed(ele);
+    // if (falseCase) expect(checkValue).not.to.equal(true, `${ele} is displayed`);
+    // else expect(checkValue).to.equal(true, `${ele} is not displayed`);
   }
 );
+
+// Then(/^I wait on element "([^"]*)?" to ( not)* be displayed$/,
+//   async (selector: string, falseCase: boolean) => {
+//     const spinnerEle = test.locators[selector];
+//     const spinner = await $(spinnerEle);
+    
+//     await commonAction.checkIsNotDisplayed(spinner, falseCase);
+    // if (falseCase) {
+    //   console.log("I have entered the block");
+    //   await (await spinner.waitForDisplayed({ timeout:5000, reverse: falseCase }));
+    //   expect(spinner.waitForDisplayed()).not.toEqual(false);
+    // } else {
+    //   await spinner.waitForDisplayed();
+    // }
+  // }
+// );

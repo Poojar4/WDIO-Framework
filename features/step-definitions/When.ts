@@ -6,13 +6,14 @@ import { text } from "stream/consumers";
 import { CLIENT_RENEG_LIMIT } from "tls";
 import { createGunzip } from "zlib";
 // import { jsClick } from "./jsClick.ts";
+import commonAction from "./commonAction";
+
 
 When(/^I click on the element "([^"]*)?"$/, async (element: string) => {
-  const newButton = test.locators[element];
-  const newButtonEle = $(newButton);
-
-  await newButtonEle.waitForClickable();
-  await newButtonEle.click();
+  const button = test.locators[element];
+  const newButton = await $(button);
+  await newButton.waitForDisplayed();
+  await newButton.click();
 });
 
 When(/^I pause for ([^"]*)?$/, async (time: number) => {
@@ -22,8 +23,13 @@ When(/^I pause for ([^"]*)?$/, async (time: number) => {
 When(
   /^I enter the value "([^"]*)?" for the element "([^"]*)?"$/,
   async (value: string, element: string) => {
-    let accName = test.locators[element];
-    await $(accName).setValue(value);
+    let searchInput = test.locators[element];
+    const searchele = await $(searchInput);
+    console.log(` searhed field found....`);
+
+    await searchele.waitForDisplayed(); // Ensure the element is visible on the page
+    await searchele.setValue(value);
+    console.log(`Data entered....`);
   }
 );
 
@@ -36,11 +42,10 @@ When(/^I scroll to element "([^"]*)?"$/, async (element: string) => {
 });
 
 When(
-  /^I wait on element "([^"]*)?" to (not )*be (enabled|displayed|exist|clickable)$/,
+  /^I wait on element "([^"]*)?" to( not)* be (enabled|displayed|exist|clickable)$/,
   async (selector: string, falseCase: Boolean, condition: string) => {
     const newButton = test.locators[selector];
     // console.log(`The button is enabled:${newButton}`);
-
     const element = await $(newButton);
 
     if (falseCase) {
@@ -55,21 +60,21 @@ When(
         }
       );
     } else {
-      switch (condition) {
-        case "enabled":
-          await element.waitForEnabled();
-          break;
-        case "displayed":
-          await element.waitForDisplayed({ timeout: 60000 });
-          break;
-        case "exist":
-          await element.waitForExist();
-          break;
-        case "clickable":
-          await element.waitForClickable();
-          break;
-        default:
-          throw new Error("unable to find the selector");
+    switch (condition) {
+      case "enabled":
+        await element.waitForEnabled();
+        break;
+      case "displayed":
+        await element.waitForDisplayed({ timeout: 60000 });
+        break;
+      case "exist":
+        await element.waitForExist();
+        break;
+      case "clickable":
+        await element.waitForClickable();
+        break;
+      default:
+        throw new Error("unable to find the selector");
       }
     }
   }
@@ -108,8 +113,10 @@ When(
   /^I click on the element "([^"]*)?" using js click$/,
   async (selector: string) => {
     const webelement = test.locators[selector];
+    const ele = await $(webelement);
+    await ele.waitForDisplayed();
     await browser.execute(async (ele) => {
-      await document.getElementsByClassName(ele).click();
+      await document.querySelector(ele).click();
     }, webelement);
   }
 );
@@ -168,37 +175,31 @@ When(/^I scroll up by "([^"]*)?"$/, async (value: number) => {
 });
 
 When(/^I switch to iframe "([^"]*)?"$/, async (element: string) => {
-  const ele = test.locators[element];
-  const iframe = await $(ele);
-  if ((await iframe.waitForExist()) && (await iframe.waitForDisplayed())) {
-    console.log("I have entered the frame");
-    await browser.switchToFrame(iframe);
-    console.log("I have switched to iframe");
-  } else {
-    throw new Error(`element not found for:${iframe}`);
-  }
+  const frame = test.locators[element];
+  const frameElement = await $(frame);
+  await browser.switchToFrame(frameElement);
 });
 
-When(
-  /^I wait until the element "([^"]*)?" is displayed$/,
-  async (element: string) => {
-    const ele = test.locators[element];
-    await browser.waitUntil(
-      async () => {
-        const element = await $(ele);
-        return element.isDisplayed();
-      },
-      {
-        timeout: 10000,
-        timeoutMsg: "Element in iframe not displayed within 10 seconds",
-      }
-    );
-  }
-);
+// When(
+//   /^I wait until the element "([^"]*)?" is displayed$/,
+//   async (element: string) => {
+//     const ele = test.locators[element];
+//     await browser.waitUntil(
+//       async () => {
+//         const element = await $(ele);
+//         return element.isDisplayed();
+//       },
+//       {
+//         timeout: 10000,
+//         timeoutMsg: "Element in iframe not displayed within 10 seconds",
+//       }
+//     );
+//   }
+// );
 
-When(/^I switch back to the parent frame$/, async () => {
-  await browser.switchToParentFrame();
-});
+// When(/^I switch back to the parent frame$/, async () => {
+//   await browser.switchToParentFrame();
+// });
 
 // When(/^I switch to the iframe with index "([^"]*)?"$/, async (index:string) => {
 //   const iframeIndex = parseInt(index);
@@ -279,7 +280,9 @@ When(
 When(/^I doubleclick on the element "([^"]*)"$/, async (element: string) => {
   const editbutton = test.locators[element];
   const edit = await $(editbutton);
+  await edit.waitForClickable();
   await $(edit).doubleclick();
+  console.log(`I double click on the element:${edit}`)
 });
 
 // When(/^I click on any one element matching "([^"]*)"$/, async (locator) => {
@@ -299,3 +302,127 @@ When(/^I enter a random id for the element "([^"]*)"$/, async (id: string) => {
 When(/^I refresh a page$/, async () => {
   await browser.refresh();
 });
+
+// When(/^I switch$/, async () => {
+//   await browser.pause(10000);
+
+//   console.log(`waited for 20 sec....`);
+//   const frameElement = await $(`//iframe[contains(@name,'vfFrameId')]`);
+//   await browser.switchToFrame(frameElement);
+
+//   // Locate the search input field
+//   const searchInput = await $(
+//     `//span[text()='Designation']/ancestor::flowruntime-lwc-body//input[@placeholder]`
+//   );
+//   // const searchInput = await $(`//div[contains(@class,'flowruntimeBody')]//input[@class='slds-input']`);
+
+//   console.log(` secrhed field found....`);
+//   // Wait for the element to be visible
+//   // await searchInput.waitForDisplayed({ timeout: 5000 });
+
+//   // Enter text into the search input field
+//   await searchInput.setValue("ojas");
+
+//   console.log(`Data entered....`);
+// });
+
+When(
+  /^I switch to frame and enter the value "([^"]*)" for the element "([^"]*)"$/,
+  async (value, selector) => {
+    await browser.pause(10000);
+
+    console.log(`waited for 20 sec....`);
+    // const iframe = test.locators[frameElement];
+    const frame = await $("//iframe[contains(@name,'vfFrameId')]");
+    // await frame.waitForDisplayed();
+    await browser.switchToFrame(frame);
+
+    // Locate the search input field
+    // const searchInput = await $( `//span[text()='Designation']/ancestor::flowruntime-lwc-body//input[@placeholder]`);
+    const searchInput = test.locators[selector];
+    const searchInputfield = await $(searchInput);
+    // const searchInput = await $(`//div[contains(@class,'flowruntimeBody')]//input[@class='slds-input']`);
+
+    console.log(`searhed field found....`);
+    // Wait for the element to be visible
+    // await searchInput.waitForDisplayed({ timeout: 5000 });
+
+    // Enter text into the search input field
+    // await searchInputfield.waitForDisplayed();
+    await searchInputfield.setValue(value);
+    console.log(`Data entered....`);
+
+    // await browser.pause(3000);
+    const checkbox =await $("//input[@class='slds-input']/ancestor::div//lightning-primitive-cell-checkbox");
+    await checkbox.click();
+    console.log(`${checkbox} is clicked`);
+
+    // await browser.pause(3000);
+    const finishbutton =await $("//div//button[@class='slds-button slds-button_brand' and text()='Finish']");
+    await finishbutton.click();
+    console.log(`${finishbutton} is clicked`);
+
+
+
+  }
+);
+
+// When(/^I wait on element "([^"]*)?" to ( not)* be displayed$/, async (selector: string, falseCase: boolean) => {
+//     const spinnerEle = test.locators[selector];
+//     const spinner = await $(spinnerEle);
+    
+//     await commonAction.checkIsNotDisplayed(spinner, falseCase);
+// });
+
+// When(/^I select and click on the element "([^"]*)?"$/, async (selector:string) => {
+//   const checkbox = test.locators[selector];
+//   const checkboxEle = await $(checkbox);
+//   if(await checkboxEle.waitForEnabled() && await checkboxEle.isSelected()){
+//    await checkboxEle.click();
+//   }
+
+// })
+
+// When(/^I switch and click on the element "([^"]*)?"$/, async (selector:string) => {
+//   const frame = await $("//iframe[contains(@name,'vfFrameId')]");
+//   await browser.switchToFrame(frame);
+//   console.log(`switched to frame...`);
+  
+//   const checkbox = test.locators[selector];
+//   const checkboxele = await $(checkbox);
+//   if(await checkboxele.waitForDisplayed() && await checkboxele.waitForClickable()){
+//   await checkboxele.click();
+//   console.log(`${checkboxele} is clicked`);
+//   }
+
+// })
+
+When(/^I switch to frame and add the employees to the Opportunity$/, async () => {
+  await browser.pause(10000);
+  const frame = await $("//iframe[contains(@name,'vfFrameId')]");
+  await browser.switchToFrame(frame);
+  console.log(`switched to frame...`);
+ 
+  const searchele = await $("//span[text()='Designation']/ancestor::flowruntime-lwc-body//input[@placeholder]");
+  console.log(`search element found...`);
+  await searchele.setValue("Trishika");
+  console.log(`value entered...`)
+  
+  await browser.keys("Enter");
+ 
+  const checkboxEle = await $("//input[@class='slds-input']/ancestor::div//lightning-primitive-cell-checkbox");
+  await checkboxEle.click();
+
+  const finishbuttonEle = await $("//div//button[@class='slds-button slds-button_brand' and text()='Finish']");
+  await finishbuttonEle.click();
+});
+
+
+
+
+
+  
+
+
+
+

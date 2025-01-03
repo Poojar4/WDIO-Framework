@@ -8,7 +8,8 @@ Given(/^I open the site "([^"]*)?"$/, async (urlText) => {
 });
 
 Given(/^I open the site with url "([^"]*)?"$/, async (url:string) => {
-  await browser.url(url);
+   await browser.url(url);
+   await browser.maximizeWindow();
 })
 
 

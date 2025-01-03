@@ -9,7 +9,7 @@ Feature:Employees Object
         And I wait on element "Employees Page" to be displayed
         And I expect that the element "Employees Page" contains the text "Employees"
         # And I wait on element "Employees New Button" to be displayed
-        And I wait on element "Employees New Button" to be enabled
+        And I wait on element "Employees New Button" to be displayed
         And I expect that the element "Employees New Button" contains the text "New"
         # And I move to element "Employees New Button"
         And I click on the element "Employees New Button"
